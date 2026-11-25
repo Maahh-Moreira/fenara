@@ -45,7 +45,7 @@ A FENARA é uma experiência de quiz que une **diversão, criação e evolução
 - **Combo e velocidade**: acertos em sequência aumentam a pontuação.
 - **Resultado**: confira desempenho, acertos, tempo médio e reveja as respostas.
 
-### Identidade visual
+### Direção visual e identidade
 
 | Cor | Hex | Aplicação |
 |:--|:--|:--|
@@ -55,7 +55,13 @@ A FENARA é uma experiência de quiz que une **diversão, criação e evolução
 | Marrom-ferrugem | `#8A2200` | Contornos e sombras sólidas |
 | Azul-noite | `#0B1220` | Textos e modo escuro |
 
-**Mascote:** fennec de orelhas amplas, pelagem laranja, interior das orelhas creme, olhos expressivos e cel-shading. Os PNGs do projeto possuem transparência para permitir o uso sobre fundos claros e escuros.
+**Mascote:** uma raposa-do-deserto de orelhas enormes, pelagem laranja, rosto expressivo e cel-shading. As diferentes poses dão personalidade à jornada sem repetir a mesma ilustração em todas as telas.
+
+**Capas dos quizzes:** o projeto traz artes SVG próprias e nítidas para Espaço/Cultura Geral, Ciências, Filmes e Séries, História, Geografia e Tecnologia. As outras categorias utilizam composições vetoriais escaláveis. Não há necessidade de ampliar recortes de baixa resolução do mockup.
+
+**Modos claro e escuro:** ambos preservam os contrastes, as cores de feedback e a legibilidade dos banners, cards e formulários.
+
+Para os detalhes da revisão de interface, veja [`docs/REFINAMENTO-V09.md`](docs/REFINAMENTO-V09.md).
 
 ---
 
@@ -130,11 +136,13 @@ npm run dev
 ```text
 fenara/
 ├── public/assets/mascote/   # PNGs da Fenara com transparência
+├── public/assets/capas/     # Ilustrações SVG originais para quizzes
 ├── src/app/                 # Interface e rotas da aplicação
 │   ├── page.tsx             # Telas e fluxos do protótipo
-│   ├── globals.css          # Design e responsividade
+│   ├── globals.css          # Base do design system
+│   ├── premium.css          # Refinamento visual e responsividade v0.9
 │   └── api/                 # Backend no modo PostgreSQL
-├── src/lib/                 # Assets, dados, jogo, APIs e autenticação
+├── src/lib/                 # Assets, dados, jogo, APIs, autenticação e regras de validação
 ├── prisma/                  # Schema, migrations e seed
 ├── design-system/           # Guia de identidade visual
 ├── docs/                    # Mockup e publicação
@@ -158,6 +166,6 @@ fenara/
 
 **FENARA** · Um projeto autoral de tecnologia, criatividade e aprendizado.
 
-*Desafie sua curiosidade.* 🦊
+*Desafie sua curiosidade.*
 
 </div>
