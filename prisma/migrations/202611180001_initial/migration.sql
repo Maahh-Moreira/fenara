@@ -1,0 +1,24 @@
+-- FENARA — PostgreSQL 15+; execute via Prisma migrate or pgAdmin Query Tool.
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+CREATE TABLE users (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT, email TEXT NOT NULL UNIQUE, password_hash TEXT, image TEXT, created_at TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE auth_accounts (id TEXT PRIMARY KEY, user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE, type TEXT NOT NULL, provider TEXT NOT NULL, provider_account_id TEXT NOT NULL, refresh_token TEXT, access_token TEXT, expires_at INTEGER, token_type TEXT, scope TEXT, id_token TEXT, session_state TEXT, UNIQUE(provider,provider_account_id));
+CREATE TABLE auth_sessions (id TEXT PRIMARY KEY, "sessionToken" TEXT NOT NULL UNIQUE, "userId" UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires TIMESTAMP(3) NOT NULL);
+CREATE TABLE auth_verification_tokens (identifier TEXT NOT NULL, token TEXT NOT NULL UNIQUE, expires TIMESTAMP(3) NOT NULL, UNIQUE(identifier,token));
+CREATE TABLE profiles ("userId" UUID PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE, xp INTEGER NOT NULL DEFAULT 0, level INTEGER NOT NULL DEFAULT 1, streak INTEGER NOT NULL DEFAULT 0, "lastPlayed" TIMESTAMP(3));
+CREATE TABLE categories (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT UNIQUE NOT NULL, slug TEXT UNIQUE NOT NULL, emoji TEXT NOT NULL, tone TEXT NOT NULL);
+CREATE TABLE themes (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT UNIQUE NOT NULL, palette JSONB NOT NULL);
+CREATE TABLE templates (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), name TEXT UNIQUE NOT NULL, description TEXT NOT NULL, category TEXT NOT NULL);
+CREATE TABLE quizzes (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), slug TEXT UNIQUE NOT NULL, title TEXT NOT NULL, description TEXT NOT NULL DEFAULT '', difficulty TEXT NOT NULL DEFAULT 'Fácil', cover TEXT NOT NULL DEFAULT 'space', visibility TEXT NOT NULL DEFAULT 'public', status TEXT NOT NULL DEFAULT 'draft', "authorId" UUID REFERENCES users(id) ON DELETE SET NULL, "categoryId" UUID REFERENCES categories(id) ON DELETE SET NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, "updatedAt" TIMESTAMP(3) NOT NULL);
+CREATE INDEX quizzes_status_visibility_idx ON quizzes(status,visibility);
+CREATE INDEX quizzes_categoryId_idx ON quizzes("categoryId");
+CREATE INDEX quizzes_authorId_idx ON quizzes("authorId");
+CREATE TABLE questions (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), "quizId" UUID NOT NULL REFERENCES quizzes(id) ON DELETE CASCADE, position INTEGER NOT NULL, kind TEXT NOT NULL DEFAULT 'multiple_choice', text TEXT NOT NULL, explanation TEXT NOT NULL DEFAULT '', seconds INTEGER NOT NULL DEFAULT 15, UNIQUE("quizId",position));
+CREATE TABLE options (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), "questionId" UUID NOT NULL REFERENCES questions(id) ON DELETE CASCADE, position INTEGER NOT NULL, label TEXT NOT NULL, correct BOOLEAN NOT NULL DEFAULT false, UNIQUE("questionId",position));
+CREATE TABLE attempts (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), "quizId" UUID NOT NULL REFERENCES quizzes(id) ON DELETE CASCADE, "userId" UUID REFERENCES users(id) ON DELETE SET NULL, "guestTokenHash" TEXT, score INTEGER NOT NULL DEFAULT 0, combo INTEGER NOT NULL DEFAULT 0, "correctCount" INTEGER NOT NULL DEFAULT 0, "finishedAt" TIMESTAMP(3), "startedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE INDEX attempts_userId_startedAt_idx ON attempts("userId","startedAt");
+CREATE TABLE attempt_answers (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), "attemptId" UUID NOT NULL REFERENCES attempts(id) ON DELETE CASCADE, "questionId" UUID NOT NULL REFERENCES questions(id) ON DELETE CASCADE, "selectedOptionId" UUID, correct BOOLEAN NOT NULL, points INTEGER NOT NULL, "spentSeconds" INTEGER NOT NULL, "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, UNIQUE("attemptId","questionId"));
+CREATE TABLE favorites ("userId" UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE, "quizId" UUID NOT NULL REFERENCES quizzes(id) ON DELETE CASCADE, PRIMARY KEY("userId","quizId"));
+CREATE TABLE badges (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), slug TEXT NOT NULL UNIQUE, name TEXT NOT NULL, description TEXT NOT NULL);
+CREATE TABLE user_badges ("userId" UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE, "badgeId" UUID NOT NULL REFERENCES badges(id) ON DELETE CASCADE, "awardedAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP, PRIMARY KEY("userId","badgeId"));
+CREATE TABLE live_sessions (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), pin VARCHAR(6) NOT NULL UNIQUE, "quizId" UUID NOT NULL, "hostId" UUID NOT NULL, status TEXT NOT NULL DEFAULT 'waiting', "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP);
+CREATE TABLE live_players (id UUID PRIMARY KEY DEFAULT gen_random_uuid(), "sessionId" UUID NOT NULL REFERENCES live_sessions(id) ON DELETE CASCADE, nickname TEXT NOT NULL, score INTEGER NOT NULL DEFAULT 0);

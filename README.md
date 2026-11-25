@@ -1,36 +1,67 @@
-# FENARA — Protótipo visual navegável
+# 🦊 FENARA — Quizzes gamificados
 
-Implementação visual inspirada no mockup aprovado, com componentes interativos e banco Supabase da etapa 2 preservado.
+FENARA é uma plataforma de quizzes com identidade original, mascote fennec, desafios com cronômetro, pontuação por velocidade, combos, editor e histórico. Interface responsiva em português.
 
-## Como executar
+![Mockup aprovado da FENARA](docs/mockup-aprovado.png)
 
-Requer Node.js 20+.
+## Experimente a demonstração
+
+Acesse a demonstração online depois de publicar na Vercel (adicione seu link aqui).
+
+### Executar sem banco (portfólio)
 
 ```bash
+cp .env.portfolio.example .env.local
 npm install
 npm run dev
 ```
 
-Acesse http://localhost:3000.
+Windows PowerShell: `Copy-Item .env.portfolio.example .env.local`. Abra `http://localhost:3000`.
 
-## Funcionalidades disponíveis
+**Na demonstração**: jogar quizzes, criar e editar rascunhos, favoritos e histórico são locais; dados persistem no navegador, não entre aparelhos. Login real e publicação compartilhada não estão disponíveis nesse modo.
 
-Home, explorar, detalhes, favoritos, catálogo de modelos, dashboard de criador, editor de múltipla escolha (autosave local), modo Solo com timer e combo, feedback e explicações, resultado e revisão, perfil com histórico local, medalhas, tema escuro, e configurações.
+### Executar com PostgreSQL
 
-Os dados locais ficam no `localStorage` do navegador. Quizzes criados em modo demonstração não são publicados no Supabase.
+Copie `.env.example` para `.env` e `.env.local`, ajuste `DATABASE_URL`, crie um banco `fenara` no PostgreSQL (administrável via pgAdmin) e execute:
 
-## Banco de dados
+```bash
+npm install
+npx prisma migrate deploy
+npm run db:seed
+npm run dev
+```
 
-`supabase/migrations` e `supabase/seed.sql` da etapa 2 estão incluídos para a integração futura. **Não execute** migrations diretamente em bancos de outros projetos sem revisão. Ver `docs/ARQUITETURA.md`.
+`NEXT_PUBLIC_PORTFOLIO_DEMO` deve estar ausente ou como `false` nesse caso.
 
-## Arquivos visuais
+## Stack
 
-`public/assets/mascote/` contém o mascote anterior e recortes das figuras já geradas. `src/lib/assets.ts` centraliza caminhos. Use arquivos independentes finais para substituir os recortes, mantendo nomes.
+Next.js App Router · TypeScript · Tailwind CSS · Framer Motion · Zustand · Prisma · PostgreSQL · NextAuth · Zod · Vitest
 
-## Próximo passo
+## Estrutura
 
-Conectar os componentes ao Supabase e implementar autenticação real, Storage, tipos adicionais de pergunta, RLS testada, publicação e compartilhamento persistente. Em seguida: acessibilidade WCAG AA e suíte automatizada.
+- `src/app/page.tsx`: home, exploração, editor, jogo, perfil e telas da aplicação
+- `src/app/api`: backend HTTP (somente modo com banco)
+- `src/lib/data.ts`: seis quizzes de demonstração
+- `src/lib/assets.ts`: catálogo de imagens
+- `public/assets`: imagens da mascote e placeholders
+- `prisma`: schema, migrations e seed PostgreSQL
+- `design-system`: guia visual
+- `docs/PUBLICAR-PORTFOLIO.md`: publicação GitHub + Vercel, sem banco e com banco
+- `.github/workflows/ci.yml`: verificação de tipo e testes em cada push
 
-## Limitações
+## Limitações e roadmap
 
-Este é um protótipo front-end com lógica de jogo local, **não** um produto pronto para produção. O botão de login com e-mail não autentica; não há Google OAuth. O QR é uma representação de link e não uma sala PIN real. Não há PWA nem backend conectado. Nenhum dado secreto é necessário para testar o front-end.
+O modo demonstração é intencionalmente isolado para não exigir um banco pago. O modo PostgreSQL tem cadastro, sessões, publicação e tentativas no servidor, mas ainda precisa de testes de integração completos, sincronização de alguns dados de perfil, demais tipos de pergunta e proteção operacional antes de uso público com contas reais.
+
+### Próximos passos
+
+1. Testes automatizados de fluxos e acessibilidade; corrigir possíveis erros de build.
+2. Completar persistência de perfil, conquistas, favoritos e editor no PostgreSQL.
+3. Adicionar recuperação de senha, moderação e limites de abuso.
+4. Modo ao vivo e equipes (fase 2).
+
+## Identidade visual
+
+Laranja `#FF5A00` · Âmbar `#FFB95A` · Creme `#FFF6E8` · Marrom `#8A2200` · Azul-noite `#0B1220`. O mascote representa uma raposa-do-deserto original com orelhas gigantes.
+
+> Projeto demonstrativo e autoral. Personalize os links e screenshots depois de publicar.

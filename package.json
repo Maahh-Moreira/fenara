@@ -1,5 +1,48 @@
 {
-  "name":"fenara","version":"0.3.0","private":true,"scripts":{"dev":"next dev","build":"next build","start":"next start","typecheck":"tsc --noEmit"},
-  "dependencies":{"next":"^15.3.0","react":"^19.0.0","react-dom":"^19.0.0","lucide-react":"^0.468.0","framer-motion":"^12.0.0","zustand":"^5.0.0","qrcode.react":"^4.0.1"},
-  "devDependencies":{"typescript":"^5.7.0","@types/node":"^22.0.0","@types/react":"^19.0.0","@types/react-dom":"^19.0.0","tailwindcss":"^3.4.0","postcss":"^8.4.0","autoprefixer":"^10.4.0"}
+  "name": "fenara",
+  "version": "0.6.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "db:generate": "prisma generate",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "db:studio": "prisma studio",
+    "postinstall": "prisma generate",
+    "db:deploy": "prisma migrate deploy",
+    "check": "npm run typecheck && npm run test"
+  },
+  "dependencies": {
+    "next": "^15.3.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "lucide-react": "^0.468.0",
+    "framer-motion": "^12.0.0",
+    "zustand": "^5.0.0",
+    "qrcode.react": "^4.0.1",
+    "@prisma/client": "^6.19.0",
+    "next-auth": "^4.24.11",
+    "bcryptjs": "^2.4.3",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "tailwindcss": "^3.4.0",
+    "postcss": "^8.4.0",
+    "autoprefixer": "^10.4.0",
+    "vitest": "^3.2.0",
+    "prisma": "^6.19.0",
+    "tsx": "^4.20.0",
+    "@types/bcryptjs": "^2.4.6"
+  },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  }
 }
