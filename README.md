@@ -8,12 +8,8 @@
 
 Uma plataforma de **quizzes gamificados** criada para transformar curiosidade em aprendizado. Explore temas, enfrente perguntas contra o tempo, crie desafios e acompanhe suas conquistas — com a companhia da Fenara, nossa raposa-do-deserto.
 
-[![Next.js](https://img.shields.io/badge/Next.js-0B1220?style=for-the-badge&logo=nextdotjs&logoColor=white)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
-[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
-[![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=for-the-badge&logo=prisma&logoColor=white)](https://www.prisma.io/)
 
-**[Repositório](https://github.com/Maahh-Moreira/fenara)** · **[Como executar](#como-executar)** · **[Estrutura](#estrutura-do-projeto)**
+**[Repositório](https://github.com/Maahh-Moreira/fenara)** · **[Estrutura](#estrutura-do-projeto)**
 
 </div>
 
