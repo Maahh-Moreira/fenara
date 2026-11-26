@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="public/assets/mascote/fenara-original.png" alt="Fenara — mascote original" width="170" />
+<img src="public/assets/mascote/fenara-criadora.png" alt="Fenara — mascote original" width="170" />
 
 # FENARA
 
@@ -82,54 +82,6 @@ O projeto foi estruturado para **dois ambientes**:
 **Dados e backend:** PostgreSQL, Prisma, API Routes do Next.js, NextAuth e Zod.
 
 **Outros recursos:** Zustand, QR Code, Vitest e layout adaptável para celular e desktop.
-
-## Como executar
-
-### 1. Demonstração local (sem banco de dados)
-
-Tenha Node.js e npm instalados. Clone o repositório:
-
-```bash
-git clone https://github.com/Maahh-Moreira/fenara.git
-cd fenara
-npm install
-```
-
-Crie o `.env.local` a partir de `.env.portfolio.example` e habilite o modo demo:
-
-```env
-NEXT_PUBLIC_PORTFOLIO_DEMO=true
-```
-
-No Windows PowerShell, você pode copiar o arquivo com:
-
-```powershell
-Copy-Item .env.portfolio.example .env.local
-```
-
-Execute:
-
-```bash
-npm run dev
-```
-
-Abra **http://localhost:3000**.
-
-### 2. Ambiente com PostgreSQL
-
-1. Crie um banco PostgreSQL (você pode administrá-lo com o pgAdmin).
-2. Preencha `.env` / `.env.local` usando `.env.example`, com `DATABASE_URL` e segredo de sessão.
-3. Desative `NEXT_PUBLIC_PORTFOLIO_DEMO`.
-4. Prepare o banco e execute:
-
-```bash
-npm install
-npx prisma migrate deploy
-npm run db:seed
-npm run dev
-```
-
-**Não envie arquivos `.env` ou senhas para o GitHub.** Consulte `docs/PUBLICAR-PORTFOLIO.md` para publicar na Vercel.
 
 ## Estrutura do projeto
 
